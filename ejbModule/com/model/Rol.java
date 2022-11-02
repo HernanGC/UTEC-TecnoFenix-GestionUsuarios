@@ -17,7 +17,7 @@ public class Rol implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_seq")
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Basic(optional = false)
     @Column(name = "nombre")
@@ -27,7 +27,7 @@ public class Rol implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "rol_funcion",
             joinColumns = @JoinColumn(name = "id_rol"),
             inverseJoinColumns = @JoinColumn(name = "id_funcionalidad")
@@ -36,8 +36,37 @@ public class Rol implements Serializable {
 
     public Rol() {}
 
-    public Rol(String nombre, String descripcion) {
+    public Rol(Long id, String nombre, String descripcion) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Set<Funcionalidad> getFuncionalidades() {
+        return funcionalidades;
+    }
+
+    public void setFuncionalidades(Set<Funcionalidad> funcionalidades) {
+        this.funcionalidades = funcionalidades;
     }
 }

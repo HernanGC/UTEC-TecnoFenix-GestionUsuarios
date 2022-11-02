@@ -8,4 +8,5 @@ public interface IUsuarioService {
     void crear(Usuario usuario);
 //    void borrar();
     Usuario actualizar(Usuario usuario);
+    boolean existePorDocumento(String documento);
 }

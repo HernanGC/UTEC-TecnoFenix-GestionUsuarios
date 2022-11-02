@@ -3,6 +3,8 @@
 	<persistence-unit name="GestionUsuarios">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:/GestionUsuarios</jta-data-source>
+		<class>com.model.Rol</class>
+		<class>com.model.Usuario</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />

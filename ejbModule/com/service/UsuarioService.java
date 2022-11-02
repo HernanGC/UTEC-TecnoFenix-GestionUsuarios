@@ -1,14 +1,12 @@
 package com.service;
 
+import com.exception.UsuarioExistenteException;
 import com.exception.UsuarioNoEncontradoException;
 import com.model.Usuario;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 
 @Stateless
 @Remote(IUsuarioService.class)
@@ -34,6 +32,10 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public void crear(Usuario usuario) {
+        if (existePorDocumento(usuario.getDocumento())) {
+            throw new UsuarioExistenteException("El usuario que se intenta crear ya existe");
+        }
+
         entityManager.persist(usuario);
         entityManager.flush();
     }
@@ -50,4 +52,14 @@ public class UsuarioService implements IUsuarioService {
         entityManager.flush();
         return usuario;
     }
+
+    @Override
+    public boolean existePorDocumento(String documento) {
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("findByDocumento", Usuario.class);
+        Usuario usuario = query.setParameter("documento", documento).getSingleResult();
+
+        return usuario != null;
+    }
+
+
 }
