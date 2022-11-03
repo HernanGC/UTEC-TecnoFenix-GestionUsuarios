@@ -9,4 +9,6 @@ public interface IUsuarioService {
 //    void borrar();
     Usuario actualizar(Usuario usuario);
     boolean existePorDocumento(String documento);
+    Usuario obtenerPorDocumento(String documento);
+    Usuario login(String documento, String contrasenia);
 }

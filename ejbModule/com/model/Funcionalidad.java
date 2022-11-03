@@ -26,6 +26,12 @@ public class Funcionalidad implements Serializable {
 
     public Funcionalidad() {}
 
+    public Funcionalidad(Integer id, String nombre, String descripcion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+
     public Funcionalidad(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -49,5 +55,14 @@ public class Funcionalidad implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "Funcionalidad{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
     }
 }

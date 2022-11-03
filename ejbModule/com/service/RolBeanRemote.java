@@ -7,7 +7,8 @@ import javax.ejb.Remote;
 @Remote
 public interface RolBeanRemote {
     Rol obtener(Long id);
-    void crear(Rol rol);
+    String crear(Rol rol);
     Rol actualizar();
     boolean existePorId(Long id);
+    void test();
 }

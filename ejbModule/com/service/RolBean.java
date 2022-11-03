@@ -30,9 +30,12 @@ public class RolBean implements RolBeanRemote {
     }
 
     @Override
-    public void crear(Rol rol) {
+    public String crear(Rol rol) {
+    	System.out.println("va pasando 2...");
+    	System.out.println(rol);
         entityManager.persist(rol);
         entityManager.flush();
+    	return "yest";
     }
 
     @Override
@@ -45,5 +48,10 @@ public class RolBean implements RolBeanRemote {
         Rol rol = entityManager.find(Rol.class, id);
 
         return rol != null;
+    }
+
+    @Override
+    public void test() {
+        System.out.println("METODO TEST EJECUTADO");
     }
 }

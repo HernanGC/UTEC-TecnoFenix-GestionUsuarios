@@ -54,11 +54,31 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public boolean existePorDocumento(String documento) {
+    public boolean existePorDocumento(String documento) throws UsuarioNoEncontradoException {
+        return obtenerPorDocumento(documento) != null;
+    }
+
+    @Override
+    public Usuario obtenerPorDocumento(String documento) throws UsuarioNoEncontradoException {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("findByDocumento", Usuario.class);
         Usuario usuario = query.setParameter("documento", documento).getSingleResult();
 
-        return usuario != null;
+        if (usuario == null) {
+            throw new UsuarioNoEncontradoException("No existe un usuario con el documento provisto.");
+        }
+
+        return usuario;
+    }
+
+    @Override
+    public Usuario login(String documento, String contrasenia) throws UsuarioNoEncontradoException {
+    	Usuario usuario = obtenerPorDocumento(documento);
+    	
+    	if (usuario.getContrasenia() != contrasenia) {
+    		throw new UsuarioNoEncontradoException("La contrasenia ingresada es incorrecta!");
+    	}
+    	
+    	return usuario;
     }
 
 

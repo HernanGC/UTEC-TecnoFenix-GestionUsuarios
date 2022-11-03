@@ -103,4 +103,17 @@ public class Usuario implements Serializable {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", documento='" + documento + '\'' +
+                ", contrasenia='" + contrasenia + '\'' +
+                ", mail='" + mail + '\'' +
+                ", rol=" + rol +
+                '}';
+    }
 }

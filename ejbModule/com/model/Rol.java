@@ -69,4 +69,14 @@ public class Rol implements Serializable {
     public void setFuncionalidades(Set<Funcionalidad> funcionalidades) {
         this.funcionalidades = funcionalidades;
     }
+
+    @Override
+    public String toString() {
+        return "Rol{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", funcionalidades=" + funcionalidades +
+                '}';
+    }
 }
