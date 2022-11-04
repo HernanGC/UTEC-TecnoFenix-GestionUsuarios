@@ -3,6 +3,7 @@ package com.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -27,12 +28,12 @@ public class Rol implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name = "rol_funcion",
             joinColumns = @JoinColumn(name = "id_rol"),
             inverseJoinColumns = @JoinColumn(name = "id_funcionalidad")
     )
-    Set<Funcionalidad> funcionalidades;
+    Set<Funcionalidad> funcionalidades = new HashSet<>();
 
     public Rol() {}
 

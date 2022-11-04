@@ -14,7 +14,7 @@ public class Funcionalidad implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "funcionalidades_seq")
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Basic(optional = false)
     @Column(name = "nombre")
@@ -26,7 +26,7 @@ public class Funcionalidad implements Serializable {
 
     public Funcionalidad() {}
 
-    public Funcionalidad(Integer id, String nombre, String descripcion) {
+    public Funcionalidad(Long id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -37,7 +37,7 @@ public class Funcionalidad implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

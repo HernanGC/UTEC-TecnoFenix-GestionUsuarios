@@ -1,46 +1,52 @@
 package com.service;
 
+import com.exception.RolNoEncontradoException;
 import com.exception.UsuarioExistenteException;
+import com.model.Funcionalidad;
 import com.model.Rol;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashSet;
+import java.util.Set;
 
 @Stateless
 public class RolBean implements RolBeanRemote {
 
     private EntityManager entityManager;
+    private FuncionalidadBean funcionalidadBean;
 
     public RolBean() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("GestionUsuarios");
         entityManager = factory.createEntityManager();
+        funcionalidadBean = new FuncionalidadBean();
     }
 
     @Override
-    public Rol obtener(Long id) {
+    public Rol obtener(Long id) throws RolNoEncontradoException {
         Rol rol = entityManager.find(Rol.class, id);
 
         if (rol == null) {
-            throw new UsuarioExistenteException("El rol no existe");
+            throw new RolNoEncontradoException("El rol no existe");
         }
 
         return rol;
     }
 
     @Override
-    public String crear(Rol rol) {
-    	System.out.println("va pasando 2...");
-    	System.out.println(rol);
+    public void crear(Rol rol) {
         entityManager.persist(rol);
         entityManager.flush();
-    	return "yest";
     }
 
     @Override
-    public Rol actualizar() {
-        return null;
+    public Rol actualizar(Rol rol) {
+        rol = entityManager.merge(rol);
+        entityManager.flush();
+
+        return rol;
     }
 
     @Override

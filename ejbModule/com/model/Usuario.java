@@ -35,7 +35,7 @@ public class Usuario implements Serializable {
     @Column(name = "mail", nullable = false)
     private String mail;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 

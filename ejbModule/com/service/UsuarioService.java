@@ -2,6 +2,7 @@ package com.service;
 
 import com.exception.UsuarioExistenteException;
 import com.exception.UsuarioNoEncontradoException;
+import com.model.Rol;
 import com.model.Usuario;
 
 import javax.ejb.Remote;
@@ -13,10 +14,12 @@ import javax.persistence.*;
 public class UsuarioService implements IUsuarioService {
 //    @PersistenceContext
     private EntityManager entityManager;
+    private RolBean rolBean;
 
     public UsuarioService() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("GestionUsuarios");
         entityManager = factory.createEntityManager();
+        rolBean = new RolBean();
     }
 
     @Override
@@ -35,6 +38,8 @@ public class UsuarioService implements IUsuarioService {
         if (existePorDocumento(usuario.getDocumento())) {
             throw new UsuarioExistenteException("El usuario que se intenta crear ya existe");
         }
+
+//        usuario.setRol(rolBean.obtener(usuario.getRol().getId()));
 
         entityManager.persist(usuario);
         entityManager.flush();
