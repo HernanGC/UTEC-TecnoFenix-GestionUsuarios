@@ -28,7 +28,7 @@ public class Rol implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "rol_funcion",
             joinColumns = @JoinColumn(name = "id_rol"),
             inverseJoinColumns = @JoinColumn(name = "id_funcionalidad")
@@ -77,7 +77,6 @@ public class Rol implements Serializable {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", funcionalidades=" + funcionalidades +
                 '}';
     }
 }

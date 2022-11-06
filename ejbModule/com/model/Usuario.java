@@ -6,8 +6,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "usuarios")
 @NamedQueries({
-        @NamedQuery(name = "findByDocumento", query = "SELECT u FROM Usuario u WHERE u.documento = :documento"),
-        @NamedQuery(name = "findAll", query = "SELECT u FROM Usuario u")
+        @NamedQuery(name = "Usuario.findByDocumento", query = "SELECT u FROM Usuario u WHERE u.documento = :documento"),
+        @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
+        @NamedQuery(name = "Usuario.deleteByDocumento", query = "DELETE FROM Usuario u WHERE u.documento = :documento")
 })
 public class Usuario implements Serializable {
 
@@ -35,7 +36,7 @@ public class Usuario implements Serializable {
     @Column(name = "mail", nullable = false)
     private String mail;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 

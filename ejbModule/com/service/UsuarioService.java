@@ -2,8 +2,11 @@ package com.service;
 
 import com.exception.UsuarioExistenteException;
 import com.exception.UsuarioNoEncontradoException;
+import com.model.Funcionalidad;
 import com.model.Rol;
 import com.model.Usuario;
+
+import java.util.Set;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -23,33 +26,31 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Usuario obtener(Long id) throws UsuarioNoEncontradoException {
-        Usuario usuario = entityManager.find(Usuario.class, id);
-
-        if (usuario == null) {
-            throw new UsuarioNoEncontradoException("El usuario no se ha encontrado");
-        }
-
-        return usuario;
+    public Usuario obtener(Long id) throws Exception {
+        return entityManager.find(Usuario.class, id);
     }
 
     @Override
-    public void crear(Usuario usuario) {
+    public void crear(Usuario usuario) throws Exception {
         if (existePorDocumento(usuario.getDocumento())) {
-            throw new UsuarioExistenteException("El usuario que se intenta crear ya existe");
+            throw new UsuarioExistenteException("Ya existe un usuario registrado con ese documento.");
         }
-
-//        usuario.setRol(rolBean.obtener(usuario.getRol().getId()));
-
+        
         entityManager.persist(usuario);
         entityManager.flush();
     }
 
-    /*
+    
     @Override
-    public void borrar() {
-        entityManager.de
-    }*/
+    public void borrar(String documento) throws UsuarioNoEncontradoException, Exception {
+    	if (!existePorDocumento(documento)) {
+    		throw new UsuarioNoEncontradoException("El usuario que intenta borrar no existe.");
+    	}
+    	
+    	Query query = entityManager.createNamedQuery("Usuario.deleteByDocumento");
+    	query.setParameter("documento", documento);
+    	query.executeUpdate();
+    }
 
     @Override
     public Usuario actualizar(Usuario usuario) {
@@ -59,32 +60,43 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public boolean existePorDocumento(String documento) throws UsuarioNoEncontradoException {
-        return obtenerPorDocumento(documento) != null;
+    public boolean existePorDocumento(String documento) throws Exception {
+    	try {
+    		Usuario usuario = obtenerPorDocumento(documento);
+    		return usuario != null;
+		} catch (NoResultException ex) {
+			return false;
+		}
     }
 
     @Override
-    public Usuario obtenerPorDocumento(String documento) throws UsuarioNoEncontradoException {
-        TypedQuery<Usuario> query = entityManager.createNamedQuery("findByDocumento", Usuario.class);
+    public Usuario obtenerPorDocumento(String documento) throws NoResultException {
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.findByDocumento", Usuario.class);
         Usuario usuario = query.setParameter("documento", documento).getSingleResult();
-
-        if (usuario == null) {
-            throw new UsuarioNoEncontradoException("No existe un usuario con el documento provisto.");
-        }
-
+        
         return usuario;
     }
 
     @Override
-    public Usuario login(String documento, String contrasenia) throws UsuarioNoEncontradoException {
+    public Usuario login(String documento, String contrasenia) throws UsuarioNoEncontradoException, Exception {
+    	if (!existePorDocumento(documento)) {
+    		throw new UsuarioNoEncontradoException("El documento ingresado es incorrecto!");
+    	}
+    	
     	Usuario usuario = obtenerPorDocumento(documento);
     	
-    	if (usuario.getContrasenia() != contrasenia) {
+    	if (!usuario.getContrasenia().equals(contrasenia)) {
     		throw new UsuarioNoEncontradoException("La contrasenia ingresada es incorrecta!");
     	}
     	
     	return usuario;
     }
+
+	@Override
+	public Set<Funcionalidad> obtenerFuncionalidadesUsuarioPorDocumento(String documento) throws NoResultException {
+		Usuario usuario = obtenerPorDocumento(documento);
+		return usuario.getRol().getFuncionalidades();
+	}
 
 
 }

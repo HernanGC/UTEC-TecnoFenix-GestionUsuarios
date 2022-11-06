@@ -27,11 +27,9 @@ public class RolBean implements RolBeanRemote {
     @Override
     public Rol obtener(Long id) throws RolNoEncontradoException {
         Rol rol = entityManager.find(Rol.class, id);
-
         if (rol == null) {
             throw new RolNoEncontradoException("El rol no existe");
         }
-
         return rol;
     }
 
